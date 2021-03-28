@@ -3,15 +3,20 @@ const Category = require('../models/Category');
 
 
 exports.createCategory = (req, res) => {
-  
+  let categoryPicture = req.file.filename
+  let parentId = req.body.parentId
    
 const categoriesObj = {
     name:req.body.name,
     slug:slugify(req.body.name)
 }
-if(req.body.parentId){
-    categoriesObj.parentId = req.body.parentId
+if(parentId){
+    categoriesObj.parentId = parentId
 }
+if(categoryPicture){
+    categoriesObj.categoryPicture = categoryPicture
+}
+
 
 const category  =  new Category(categoriesObj);
 

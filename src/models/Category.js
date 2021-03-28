@@ -7,6 +7,10 @@ const productSchema = mongoose.Schema({
     slug:{type:String,
         required:true,
         unique:true},
+        categoryPicture:{
+          type:String,
+          required:true
+    },    
      parentId:{type:String  }
 
 },{timestamps:true});

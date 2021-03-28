@@ -5,7 +5,6 @@ const {requireSignin,adminMiddleware} = require('../common-middleware')
  const multer = require('multer');
  const path = require('path');
 
- let counter = 1;
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
   })
   const upload = multer({storage});
    
-//   const upload = multer({ storage: storage })
 
 
 router.post('/products',requireSignin,adminMiddleware, 

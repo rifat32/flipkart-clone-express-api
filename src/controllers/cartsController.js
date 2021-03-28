@@ -17,9 +17,10 @@ exports.createCart = (req, res) => {
            return el.product == product
         })
        
-        
+        let condition, action;
         if(item) {
-            Cart.findOneAndUpdate({ 'user': req.user._id, 'cartItems.product':product},{
+            condition = { 'user': req.user._id, 'cartItems.product':product}
+            action = {
                 '$set':{
                     'cartItems':{
                         ...req.body.cartItems,
@@ -27,41 +28,32 @@ exports.createCart = (req, res) => {
 
                     }
                 }
-            }).exec((_err, _data) => {
-             if(_err) {
-                     return res.status(400).json({
-                         'status':400,
-                          err:_err
-                      })
-                  }
-             if(_data) {
-                 return res.status(201).json({
-                     'status':201,
-                      data:_data
-                  })
-             }     
-         })
+            }
+         
         } else {
-            Cart.findOneAndUpdate({ user: req.user._id},{
+            condition = { user: req.user._id};
+            action = {
                 '$push':{
-                    'cartItems':req.body.cartItems
+                    'cartItems.$':req.body.cartItems
                 }
-            }).exec((_err, _data) => {
-             if(_err) {
-                     return res.status(400).json({
-                         'status':400,
-                          err:_err
-                      })
-                  }
-             if(_data) {
-                 return res.status(201).json({
-                     'status':201,
-                      data:_data
-                  })
-             }     
-         })
+            }
+           
 
         }
+        Cart.findOneAndUpdate(condition,action).exec((_err, _data) => {
+         if(_err) {
+                 return res.status(400).json({
+                     'status':400,
+                      err:_err
+                  })
+              }
+         if(_data) {
+             return res.status(201).json({
+                 'status':201,
+                  data:_data
+              })
+         }     
+     })
 
 
     
